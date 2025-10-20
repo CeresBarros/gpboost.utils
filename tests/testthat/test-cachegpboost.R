@@ -1,9 +1,14 @@
 library(gpboost, lib.loc = "E:/LandscapesInMotion/packages/x86_64-w64-mingw32/4.5/")
 library(assertthat, lib.loc = "E:/LandscapesInMotion/packages/x86_64-w64-mingw32/4.5/")
 Require::Require("CeresBarros/reproducible@CopyCacheAtts4gpboost")
+options(reproducible.cachePath = file.path(tempdir(), "cache-test"))
+
+## doesn't work:
+# devtools::install_local()
+# library(gpboost.utils)
 
 devtools::load_all()
-options(reproducible.cachePath = file.path(tempdir(), "cache-test"))
+# source("C:/Users/cbarros/GitHub/gpboost.utils/R/wrap.R")
 
 data(GPBoost_data, package = "gpboost")
 dtrain <- gpb.Dataset(X, label = y)
