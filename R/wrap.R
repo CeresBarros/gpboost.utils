@@ -12,7 +12,9 @@
 #'
 #' @export
 #' @rdname dotWrap
-.wrap.GPModel <- function(obj, ...) {
+.wrap.GPModel <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
+                          conn = getOption("reproducible.conn", NULL),
+                          verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   ## Cache the model list, so that it can be saved as .rds using "normal" Cache methods
   obj <- obj$model_to_list(include_response_data = TRUE)
   class(obj) <- c("GPModel", class(obj))   ## to call .unwrap.GPModel from .unwrap.default (otherwise assumed to be a "Path")
@@ -21,7 +23,9 @@
 
 #' @export
 #' @rdname dotWrap
-.wrap.gpb.Booster <- function(obj, ...) {
+.wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
+                              conn = getOption("reproducible.conn", NULL),
+                              verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   browser()
   if (is.na(obj$raw)) {
     obj$raw <- obj$save_model_to_string(NULL)
@@ -32,7 +36,9 @@
 
 #' @export
 #' @rdname dotWrap
-.unwrap.GPModel <- function(obj, ...) {
+.unwrap.GPModel <- function(obj, cachePath, cacheId,
+                            drv = getDrv(getOption("reproducible.drv", NULL)),
+                            conn = getOption("reproducible.conn", NULL), ...) {
   ## go from JSON to model list:
   # model_list <- RJSONIO::fromJSON(content = obj)
 
@@ -43,7 +49,9 @@
 
 #' @export
 #' @rdname dotWrap
-.unwrap.gpb.Booster <- function(obj, ...) {
+.unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
+                                drv = getDrv(getOption("reproducible.drv", NULL)),
+                                conn = getOption("reproducible.conn", NULL), ...) {
   browser()
   if (!is.na(obj$raw)) {
     obj2 <- gpboost::gpb.load(model_str = obj$raw)
