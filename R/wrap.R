@@ -1,17 +1,5 @@
-#' Deal with class for saving to and loading from Cache or Disk
-#'
-#' Methods that prepare `GPModel` and `gpb.Booster` objcts for
-#' saving to disk (or RAM) via e.g., `saveRDS`, which need wrapping and unwrapping.
-#'
-#' @param obj Any arbitrary R object.
-#' @param ... Arguments passed to methods; default does not use anything in `...`.
-#' @inheritParams reproducible::Cache
-#' @inheritParams reproducible::loadFromCache
-#'
-#' @return Returns an object that can be saved to disk e.g., via `saveRDS`.
-#'
 #' @export
-#' @rdname dotWrap
+#' @method .wrap GPModel
 .wrap.GPModel <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                           conn = getOption("reproducible.conn", NULL),
                           verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
@@ -22,11 +10,10 @@
 }
 
 #' @export
-#' @rdname dotWrap
+#' @method .wrap gpb.Booster
 .wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                               conn = getOption("reproducible.conn", NULL),
                               verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
-  browser()
   if (is.na(obj$raw)) {
     obj$raw <- obj$save_model_to_string(NULL)
   }
@@ -35,7 +22,7 @@
 
 
 #' @export
-#' @rdname dotWrap
+#' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
                             drv = getDrv(getOption("reproducible.drv", NULL)),
                             conn = getOption("reproducible.conn", NULL), ...) {
@@ -48,7 +35,7 @@
 }
 
 #' @export
-#' @rdname dotWrap
+#' @method .unwrap gpb.Booster
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
                                 drv = getDrv(getOption("reproducible.drv", NULL)),
                                 conn = getOption("reproducible.conn", NULL), ...) {
