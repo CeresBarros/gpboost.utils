@@ -39,7 +39,6 @@
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
                                 drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
                                 conn = getOption("reproducible.conn", NULL), ...) {
-  browser()
   if (!is.na(obj$raw)) {
     obj2 <- gpboost::gpb.load(model_str = obj$raw)
     obj2$best_iter <- obj$best_iter
