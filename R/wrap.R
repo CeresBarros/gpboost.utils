@@ -1,6 +1,6 @@
 #' @export
 #' @method .wrap GPModel
-.wrap.GPModel <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
+.wrap.GPModel <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
                           conn = getOption("reproducible.conn", NULL),
                           verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   ## Cache the model list, so that it can be saved as .rds using "normal" Cache methods
@@ -11,7 +11,7 @@
 
 #' @export
 #' @method .wrap gpb.Booster
-.wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
+.wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
                               conn = getOption("reproducible.conn", NULL),
                               verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   if (is.na(obj$raw)) {
@@ -24,7 +24,7 @@
 #' @export
 #' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
-                            drv = getDrv(getOption("reproducible.drv", NULL)),
+                            drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
                             conn = getOption("reproducible.conn", NULL), ...) {
   ## go from JSON to model list:
   # model_list <- RJSONIO::fromJSON(content = obj)
@@ -37,7 +37,7 @@
 #' @export
 #' @method .unwrap gpb.Booster
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
-                                drv = getDrv(getOption("reproducible.drv", NULL)),
+                                drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
                                 conn = getOption("reproducible.conn", NULL), ...) {
   browser()
   if (!is.na(obj$raw)) {
