@@ -23,8 +23,7 @@ Suggests:
   stats,
   testthat,
   withr
-URL: 
-    https://github.com/CeresBarros/gpboost.utils
+URL: https://github.com/CeresBarros/gpboost.utils
 License: GPL-3
 Language: en-CAS
 Encoding: UTF-8
