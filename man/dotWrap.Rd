@@ -4,9 +4,11 @@
 \alias{.wrap}
 \alias{.wrap.GPModel}
 \alias{.wrap.gpb.Booster}
+\alias{.wrap.gpb.CVBooster}
 \alias{.unwrap}
 \alias{.unwrap.GPModel}
 \alias{.unwrap.gpb.Booster}
+\alias{.unwrap.gpb.CVBooster}
 \title{Deal with class for saving to and loading from Cache or Disk}
 \usage{
 .wrap(
@@ -42,6 +44,17 @@
   ...
 )
 
+\method{.wrap}{gpb.CVBooster}(
+  obj,
+  cachePath,
+  preDigest,
+  drv = getDrv(getOption("reproducible.drv", NULL)),
+  conn = getOption("reproducible.conn", NULL),
+  verbose = getOption("reproducible.verbose"),
+  outputObjects = NULL,
+  ...
+)
+
 .unwrap(
   obj,
   cachePath,
@@ -61,6 +74,15 @@
 )
 
 \method{.unwrap}{gpb.Booster}(
+  obj,
+  cachePath,
+  cacheId,
+  drv = getDrv(getOption("reproducible.drv", NULL)),
+  conn = getOption("reproducible.conn", NULL),
+  ...
+)
+
+\method{.unwrap}{gpb.CVBooster}(
   obj,
   cachePath,
   cacheId,

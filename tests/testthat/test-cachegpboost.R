@@ -64,6 +64,59 @@ test_that("test Caching gpb.Booster", {
 
 })
 
+test_that("test Caching gpb.CVBooster", {
+  testInit()
+
+  savedSeed <- .Random.seed
+  on.exit(assign(".Random.seed", savedSeed, envir = .GlobalEnv), add = TRUE)
+
+  data(GPBoost_data, package = "gpboost")
+  dtrain <- gpb.Dataset(X, label = y)
+  params <- list(learning_rate = 0.05,
+                 max_depth = 6,
+                 min_data_in_leaf = 5)
+  funCall <- quote(gpb.cv2(params = params,
+                          data = dtrain,
+                          gp_model = gp_model,
+                          nrounds = 100,
+                          nfold = 4,
+                          eval = "l2",
+                          early_stopping_rounds = 5,
+                          use_gp_model_for_validation = TRUE))
+
+  ## Caching a gpb.CVBooster model ---------
+  gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian",
+                      free_raw_data = TRUE)
+  set.seed(123)
+  expect_error({eval(funCall) |>
+    Cache()})
+
+  gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian",
+                      free_raw_data = FALSE)
+  set.seed(123)
+  cvbst <- eval(funCall) |>
+    Cache()
+
+  cvbst.booster <- cvbst$boosters[[1]]$booster
+  pred <- predict(cvbst.booster, data = X_test, gp_coords_pred = coords_test,
+                  group_data_pred = group_data_test[, 1], predict_cov_mat = TRUE)
+  expect_true(is(pred, "list"))
+  expect_true(is(pred$response_mean, "numeric"))
+
+  set.seed(123)
+  cvbst2 <- eval(funCall) |>
+    Cache()
+  cvbst2.booster <- cvbst2$boosters[[1]]$booster
+  pred2 <- predict(cvbst2.booster, data = X_test, gp_coords_pred = coords_test,
+                   group_data_pred = group_data_test[, 1], predict_cov_mat = TRUE)
+  expect_equal(pred, pred2)
+  expect_false(identical(cvbst, cvbst2))  ## they will never be identical
+  expect_false(identical(cvbst.booster, cvbst2.booster))  ## they will never be identical
+  expect_false(cvbst.booster$`.__enclos_env__`$private$gp_model_prediction_data_loaded_from_file)
+  expect_true(cvbst2.booster$`.__enclos_env__`$private$gp_model_prediction_data_loaded_from_file)
+
+})
+
 test_that("test Caching GPModel", {
   testInit()
 
