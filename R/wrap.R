@@ -49,3 +49,11 @@
   }
   return(obj)
 }
+
+
+register_all_s3_methods = function() {
+  s3_register("reproducible::.wrap", "gpb.Booster")
+  s3_register("reproducible::.wrap", "GPModel")
+  s3_register("reproducible::.unwrap", "gpb.Booster")
+  s3_register("reproducible::.unwrap", "GPModel")
+}
