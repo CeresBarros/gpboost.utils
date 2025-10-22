@@ -46,6 +46,7 @@
 }
 
 #' @rdname dotWrap
+#' @export
 #' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
                             drv = getDrv(getOption("reproducible.drv", NULL)),
