@@ -20,7 +20,6 @@
   obj
 }
 
-
 #' @export
 #' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
