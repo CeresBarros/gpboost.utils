@@ -1,4 +1,3 @@
-library(assertthat)
 library(data.table)
 library(gpboost)
 library(reproducible)
