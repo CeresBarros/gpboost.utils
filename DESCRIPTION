@@ -20,6 +20,7 @@ Suggests:
   reproducible,
   rlang,
   RSQLite,
+  stats,
   testthat,
   withr
 URL: 
