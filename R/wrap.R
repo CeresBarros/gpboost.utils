@@ -1,3 +1,18 @@
+#' Deal with class for saving to and loading from Cache or Disk
+#'
+#' See [`reproducible::.wrap()`]
+#'
+#' @name .wrap
+#' @rdname dotWrap
+#' @export
+#' @inheritParams reproducible::.wrap
+.wrap <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+                  conn = getOption("reproducible.conn", NULL),
+                  verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
+  UseMethod(".wrap")
+}
+
+#' @rdname dotWrap
 #' @export
 #' @method .wrap GPModel
 .wrap.GPModel <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
@@ -9,6 +24,7 @@
   return(obj)
 }
 
+#' @rdname dotWrap
 #' @export
 #' @method .wrap gpb.Booster
 .wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
@@ -17,10 +33,19 @@
   if (is.na(obj$raw)) {
     obj$raw <- obj$save_model_to_string(NULL)
   }
-  obj
+  return(obj)
 }
 
+#' @rdname dotWrap
 #' @export
+#' @inheritParams reproducible::.unwrap
+.unwrap <- function(obj, cachePath, cacheId,
+                    drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+                    conn = getOption("reproducible.conn", NULL), ...) {
+  UseMethod(".unwrap")
+}
+
+#' @rdname dotWrap
 #' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
                             drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
@@ -30,9 +55,10 @@
 
   ## then from model list to GPModel
   obj <- gpboost:::gpb.GPModel$new(model_list = obj)
-  obj
+  return(obj)
 }
 
+#' @rdname dotWrap
 #' @export
 #' @method .unwrap gpb.Booster
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
@@ -50,7 +76,7 @@
 }
 
 
-register_all_s3_methods = function() {
+register_all_s3_methods <- function() {
   s3_register("reproducible::.wrap", "gpb.Booster")
   s3_register("reproducible::.wrap", "GPModel")
   s3_register("reproducible::.unwrap", "gpb.Booster")
