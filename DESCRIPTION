@@ -23,6 +23,7 @@ Suggests:
   stats,
   testthat,
   withr
+Remotes: CeresBarros/reproducible@devCeres
 URL: https://github.com/CeresBarros/gpboost.utils
 License: GPL-3
 Language: en-CAS
