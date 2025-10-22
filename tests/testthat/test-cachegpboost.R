@@ -47,7 +47,7 @@ test_that("test Caching gpb.Booster", {
     Cache()
   pred2 <- predict(bst2, data = X_test, gp_coords_pred = coords_test,
                    group_data_pred = group_data_test[, 1], predict_cov_mat = TRUE)
-  are_equal(pred, pred2)
+  expect_equal(pred, pred2)
   expect_false(identical(bst, bst2))  ## they will never be identical
   expect_false(bst$`.__enclos_env__`$private$gp_model_prediction_data_loaded_from_file)
   expect_true(bst2$`.__enclos_env__`$private$gp_model_prediction_data_loaded_from_file)
@@ -60,9 +60,7 @@ test_that("test Caching gpb.Booster", {
   att2rm <- setdiff(names(attributes(bst2NoCAttr)), names(attributes(bstLoaded)))
   lapply(att2rm, function(attname) attr(bst2NoCAttr, attname) <- NULL)
 
-  are_equal(bst2NoCAttr, bstLoaded)
-
-
+  expect_equal(bst2NoCAttr, bstLoaded)
 
 })
 
@@ -107,7 +105,7 @@ test_that("test Caching GPModel", {
   attributes(gp_modelOut2)
 
   covpars2 <- get_cov_pars(gp_modelOut2)
-  are_equal(covpars, covpars2)
+  expect_equal(covpars, covpars2)
 
   ## save/load model without Cache
   gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian")
@@ -118,7 +116,7 @@ test_that("test Caching GPModel", {
   gp_modelLoaded <- loadGPModel(tmpfile)
 
   covpars3 <- get_cov_pars(gp_modelLoaded)
-  are_equal(covpars, covpars3)
+  expect_equal(covpars, covpars3)
 
   expect_false(gp_modelOut$`.__enclos_env__`$private$model_has_been_loaded_from_saved_file)
   expect_true(gp_modelOut2$`.__enclos_env__`$private$model_has_been_loaded_from_saved_file)
@@ -126,13 +124,13 @@ test_that("test Caching GPModel", {
 
   out <- try(is(gp_modelLoaded$model_to_list(), "list"), silent = TRUE)
   out2 <- try(is(gp_modelOut2$model_to_list(), "list"), silent = TRUE)
-  are_equal(out, out2)   ## both Cache and loadGPModel result in an "incomplete" object.
+  expect_equal(out, out2)   ## both Cache and loadGPModel result in an "incomplete" object.
 
   gp_modelOut2Noatt <- copy(gp_modelOut2)
   att2rm <- setdiff(names(attributes(gp_modelOut2Noatt)), names(attributes(gp_modelLoaded)))
   lapply(att2rm, function(attname) attr(gp_modelOut2Noatt, attname) <- NULL)
 
-  are_equal(gp_modelOut2Noatt, gp_modelLoaded)
+  expect_equal(gp_modelOut2Noatt, gp_modelLoaded)
 })
 
 test_that("test Caching list of gpboost models", {
@@ -190,7 +188,7 @@ test_that("test Caching list of gpboost models", {
   gp_modelLoaded <- loadGPModel(tmpfile)
   covpars3 <- get_cov_pars(gp_modelLoaded)
 
-  are_equal(covpars, covpars3)
+  expect_equal(covpars, covpars3)
   expect_true(all.equal(pred, pred2))
   expect_true(is(summary(bst.list2$gp_model), "GPModel"))
 
@@ -210,7 +208,7 @@ test_that("test Caching list of gpboost models", {
   att2rm <- setdiff(names(attributes(bst.list2Noatt)), names(attributes(gp_modelLoaded)))
   lapply(att2rm, function(attname) attr(bst.list2Noatt, attname) <- NULL)
 
-  are_equal(bst.list2Noatt, gp_modelLoaded)
+  expect_equal(bst.list2Noatt, gp_modelLoaded)
 
 
 })
