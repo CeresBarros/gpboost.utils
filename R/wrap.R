@@ -59,13 +59,14 @@
 }
 
 #' @rdname dotWrap
+#' @importFrom gpboost gpb.load
 #' @export
 #' @method .unwrap gpb.Booster
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
                                 drv = getDrv(getOption("reproducible.drv", NULL)),
                                 conn = getOption("reproducible.conn", NULL), ...) {
   if (!is.na(obj$raw)) {
-    obj2 <- gpboost::gpb.load(model_str = obj$raw)
+    obj2 <- gpb.load(model_str = obj$raw)
     obj2$best_iter <- obj$best_iter
     obj2$record_evals <- obj$record_evals
     obj2$params <- obj$params
