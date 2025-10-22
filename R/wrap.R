@@ -6,7 +6,7 @@
 #' @rdname dotWrap
 #' @export
 #' @inheritParams reproducible::.wrap
-.wrap <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+.wrap <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                   conn = getOption("reproducible.conn", NULL),
                   verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   UseMethod(".wrap")
@@ -15,7 +15,7 @@
 #' @rdname dotWrap
 #' @export
 #' @method .wrap GPModel
-.wrap.GPModel <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+.wrap.GPModel <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                           conn = getOption("reproducible.conn", NULL),
                           verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   ## Cache the model list, so that it can be saved as .rds using "normal" Cache methods
@@ -27,7 +27,7 @@
 #' @rdname dotWrap
 #' @export
 #' @method .wrap gpb.Booster
-.wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+.wrap.gpb.Booster <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                               conn = getOption("reproducible.conn", NULL),
                               verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   if (is.na(obj$raw)) {
@@ -40,7 +40,7 @@
 #' @export
 #' @inheritParams reproducible::.unwrap
 .unwrap <- function(obj, cachePath, cacheId,
-                    drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+                    drv = getDrv(getOption("reproducible.drv", NULL)),
                     conn = getOption("reproducible.conn", NULL), ...) {
   UseMethod(".unwrap")
 }
@@ -48,13 +48,13 @@
 #' @rdname dotWrap
 #' @method .unwrap GPModel
 .unwrap.GPModel <- function(obj, cachePath, cacheId,
-                            drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+                            drv = getDrv(getOption("reproducible.drv", NULL)),
                             conn = getOption("reproducible.conn", NULL), ...) {
   ## go from JSON to model list:
   # model_list <- RJSONIO::fromJSON(content = obj)
 
   ## then from model list to GPModel
-  obj <- gpboost:::gpb.GPModel$new(model_list = obj)
+  obj <- gpb.GPModel$new(model_list = obj)
   return(obj)
 }
 
@@ -62,7 +62,7 @@
 #' @export
 #' @method .unwrap gpb.Booster
 .unwrap.gpb.Booster <- function(obj, cachePath, cacheId,
-                                drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+                                drv = getDrv(getOption("reproducible.drv", NULL)),
                                 conn = getOption("reproducible.conn", NULL), ...) {
   if (!is.na(obj$raw)) {
     obj2 <- gpboost::gpb.load(model_str = obj$raw)
