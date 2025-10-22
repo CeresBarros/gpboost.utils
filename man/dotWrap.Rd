@@ -13,7 +13,7 @@
   obj,
   cachePath,
   preDigest,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   verbose = getOption("reproducible.verbose"),
   outputObjects = NULL,
@@ -24,7 +24,7 @@
   obj,
   cachePath,
   preDigest,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   verbose = getOption("reproducible.verbose"),
   outputObjects = NULL,
@@ -35,7 +35,7 @@
   obj,
   cachePath,
   preDigest,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   verbose = getOption("reproducible.verbose"),
   outputObjects = NULL,
@@ -46,7 +46,7 @@
   obj,
   cachePath,
   cacheId,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   ...
 )
@@ -55,7 +55,7 @@
   obj,
   cachePath,
   cacheId,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   ...
 )
@@ -64,7 +64,7 @@
   obj,
   cachePath,
   cacheId,
-  drv = reproducible:::getDrv(getOption("reproducible.drv", NULL)),
+  drv = getDrv(getOption("reproducible.drv", NULL)),
   conn = getOption("reproducible.conn", NULL),
   ...
 )
