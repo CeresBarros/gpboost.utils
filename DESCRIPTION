@@ -14,10 +14,10 @@ Description: This package contains funcitons that support the use of `gpboost`
 Depends:
   R (>= 4.3)
 Imports:
-  gpboost
+  gpboost,
+  reproducible
 Suggests:
   data.table,
-  reproducible,
   rlang,
   RSQLite,
   stats,
