@@ -14,9 +14,12 @@ Description: This package contains funcitons that support the use of `gpboost`
 Depends:
   R (>= 4.3)
 Imports:
-  gpboost
+  gpboost,
+  reproducible,
+  withr
 Suggests:
-  reproducible
+  data.table,
+  testthat
 URL: 
     https://github.com/CeresBarros/gpboost.utils
 License: GPL-3
