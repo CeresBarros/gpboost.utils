@@ -41,7 +41,7 @@
                               conn = getOption("reproducible.conn", NULL),
                               verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
   if (is.na(obj$raw)) {
-    obj$raw <- obj$save_model_to_string(NULL)
+    obj$raw <- obj$save_model_to_string(NULL, save_raw_data = TRUE)
   }
   return(obj)
 }
@@ -63,9 +63,7 @@
                   "  and use gpboost.utils::gpb.cv2"))
     }
 
-    obj.booster$raw <- obj.booster$save_model_to_string(NULL)   ## this
-    # gp_model2 <- .wrap(gp_model2) ## maybe not needed
-    # obj.booster$`.__enclos_env__`$private$gp_model <- gp_model2
+    obj.booster$raw <- obj.booster$save_model_to_string(NULL, save_raw_data = TRUE)
   }
 
   return(obj)
