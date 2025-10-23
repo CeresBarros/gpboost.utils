@@ -189,8 +189,7 @@ This version of \code{\link[gpboost:gpb.cv]{gpboost::gpb.cv()}} respects \code{f
 value in passed to \code{\link[gpboost:GPModel]{gpboost::GPModel()}}
 }
 \examples{
-# See https://github.com/fabsig/GPBoost/tree/master/R-package for more examples
-\donttest{
+# See https://github.com/fabsig/GPBoost/tree/master/R-package for more example
 library(gpboost)
 library(reproducible)
 data(GPBoost_data, package = "gpboost")
@@ -205,41 +204,44 @@ params <- list(learning_rate = 0.05,
 # Run CV
 set.seed(123)
 cvbst <- gpb.cv2(params = params,
-                data = dtrain,
-                gp_model = gp_model,
-                nrounds = 100,
-                nfold = 4,
-                eval = "l2",
-                early_stopping_rounds = 5,
-                use_gp_model_for_validation = TRUE) |>
-Cache(omitArgs = c("gp_model", "data"))   ## gp_model and data must be omitted, as they are changed in place
+                 data = dtrain,
+                 gp_model = gp_model,
+                 nrounds = 100,
+                 nfold = 4,
+                 eval = "l2",
+                 early_stopping_rounds = 5,
+                 use_gp_model_for_validation = TRUE) |>
+  Cache(omitArgs = c("gp_model", "data"))   ## omit gp_model and data -- they are changed in place
 ## retrieve from Cache
 set.seed(123)
 cvbst <- gpb.cv2(params = params,
-                data = dtrain,
-                gp_model = gp_model,
-                nrounds = 100,
-                nfold = 4,
-                eval = "l2",
-                early_stopping_rounds = 5,
-                use_gp_model_for_validation = TRUE) |>
-Cache(omitArgs = c("gp_model", "data"))    ## gp_model must be omitted since it's changed in place
+                 data = dtrain,
+                 gp_model = gp_model,
+                 nrounds = 100,
+                 nfold = 4,
+                 eval = "l2",
+                 early_stopping_rounds = 5,
+                 use_gp_model_for_validation = TRUE) |>
+  Cache(omitArgs = c("gp_model", "data"))
 
 ## to cache both the GPModel and gpb.CVBooster wrap the call in a function and
 ## export them in a list()
 gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian", free_raw_data = FALSE)
 set.seed(123)
+\dontrun{
+## the following will fail, because gpb.cv2 does not train gp_model and
+## untrained 'GPModel' objects cannot be saved
 cvbst.ls <- (function(){
   out <- gpb.cv2(params = params,
-                data = dtrain,
-                gp_model = gp_model,
-                nrounds = 100,
-                nfold = 4,
-                eval = "l2",
-                early_stopping_rounds = 5,
-                use_gp_model_for_validation = TRUE)
+                 data = dtrain,
+                 gp_model = gp_model,
+                 nrounds = 100,
+                 nfold = 4,
+                 eval = "l2",
+                 early_stopping_rounds = 5,
+                 use_gp_model_for_validation = TRUE)
   list(cvbst = out, gp_model = gp_model)
-  })()|>
-Cache()   ## no need use omitArgs now
+})()|>
+  Cache()
 }
 }
