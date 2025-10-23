@@ -14,10 +14,20 @@
 
 #' @rdname dotWrap
 #' @export
+#' @importFrom gpboost saveGPModel
 #' @method .wrap GPModel
 .wrap.GPModel <- function(obj, cachePath, preDigest,  drv = getDrv(getOption("reproducible.drv", NULL)),
                           conn = getOption("reproducible.conn", NULL),
                           verbose = getOption("reproducible.verbose"), outputObjects  = NULL, ...) {
+  ## non-trained GPModels can't be saved
+  tmpfile <- tempfile(fileext = ".json")
+  out <- try(saveGPModel(obj, filename = tmpfile), silent = TRUE)
+  if (is(out, "try-error")) {
+    stop("'GPModel' can't be Cached because it hasn't been trained.\n",
+         "   Some training functions do not train the input 'GPModel' (e.g. 'gpb.cv')")
+  }
+  file.remove(tmpfile)
+
   ## Cache the model list, so that it can be saved as .rds using "normal" Cache methods
   obj <- obj$model_to_list(include_response_data = TRUE)
   class(obj) <- c("GPModel", class(obj))   ## to call .unwrap.GPModel from .unwrap.default (otherwise assumed to be a "Path")
