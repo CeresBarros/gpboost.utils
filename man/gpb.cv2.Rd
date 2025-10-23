@@ -226,9 +226,9 @@ cvbst <- gpb.cv2(params = params,
 
 ## to cache both the GPModel and gpb.CVBooster wrap the call in a function and
 ## export them in a list()
+\donttest{
 gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian", free_raw_data = FALSE)
 set.seed(123)
-\dontrun{
 ## the following will fail, because gpb.cv2 does not train gp_model and
 ## untrained 'GPModel' objects cannot be saved
 cvbst.ls <- (function(){
