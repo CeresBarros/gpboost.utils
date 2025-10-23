@@ -6,8 +6,7 @@
 #' @return a trained model `gpb.CVBooster`.
 #'
 #' @examples
-#' # See https://github.com/fabsig/GPBoost/tree/master/R-package for more examples
-#' \donttest{
+#' # See https://github.com/fabsig/GPBoost/tree/master/R-package for more example
 #' library(gpboost)
 #' library(reproducible)
 #' data(GPBoost_data, package = "gpboost")
@@ -22,74 +21,77 @@
 #' # Run CV
 #' set.seed(123)
 #' cvbst <- gpb.cv2(params = params,
-#'                 data = dtrain,
-#'                 gp_model = gp_model,
-#'                 nrounds = 100,
-#'                 nfold = 4,
-#'                 eval = "l2",
-#'                 early_stopping_rounds = 5,
-#'                 use_gp_model_for_validation = TRUE) |>
-#' Cache(omitArgs = c("gp_model", "data"))   ## gp_model and data must be omitted, as they are changed in place
+#'                  data = dtrain,
+#'                  gp_model = gp_model,
+#'                  nrounds = 100,
+#'                  nfold = 4,
+#'                  eval = "l2",
+#'                  early_stopping_rounds = 5,
+#'                  use_gp_model_for_validation = TRUE) |>
+#'   Cache(omitArgs = c("gp_model", "data"))   ## omit gp_model and data -- they are changed in place
 #' ## retrieve from Cache
 #' set.seed(123)
 #' cvbst <- gpb.cv2(params = params,
-#'                 data = dtrain,
-#'                 gp_model = gp_model,
-#'                 nrounds = 100,
-#'                 nfold = 4,
-#'                 eval = "l2",
-#'                 early_stopping_rounds = 5,
-#'                 use_gp_model_for_validation = TRUE) |>
-#' Cache(omitArgs = c("gp_model", "data"))    ## gp_model must be omitted since it's changed in place
+#'                  data = dtrain,
+#'                  gp_model = gp_model,
+#'                  nrounds = 100,
+#'                  nfold = 4,
+#'                  eval = "l2",
+#'                  early_stopping_rounds = 5,
+#'                  use_gp_model_for_validation = TRUE) |>
+#'   Cache(omitArgs = c("gp_model", "data"))
 #'
 #' ## to cache both the GPModel and gpb.CVBooster wrap the call in a function and
 #' ## export them in a list()
 #' gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian", free_raw_data = FALSE)
 #' set.seed(123)
+#' \dontrun{
+#' ## the following will fail, because gpb.cv2 does not train gp_model and
+#' ## untrained 'GPModel' objects cannot be saved
 #' cvbst.ls <- (function(){
 #'   out <- gpb.cv2(params = params,
-#'                 data = dtrain,
-#'                 gp_model = gp_model,
-#'                 nrounds = 100,
-#'                 nfold = 4,
-#'                 eval = "l2",
-#'                 early_stopping_rounds = 5,
-#'                 use_gp_model_for_validation = TRUE)
+#'                  data = dtrain,
+#'                  gp_model = gp_model,
+#'                  nrounds = 100,
+#'                  nfold = 4,
+#'                  eval = "l2",
+#'                  early_stopping_rounds = 5,
+#'                  use_gp_model_for_validation = TRUE)
 #'   list(cvbst = out, gp_model = gp_model)
-#'   })()|>
-#' Cache()   ## no need use omitArgs now
+#' })()|>
+#'   Cache()
 #' }
 #' @importFrom data.table data.table setorderv
 #' @importFrom methods is
 #' @import gpboost
 #' @export
 gpb.cv2 <- function(params = list()
-                   , data
-                   , gp_model = NULL
-                   , nrounds = 1000L
-                   , early_stopping_rounds = NULL
-                   , folds = NULL
-                   , nfold = 5L
-                   , metric = NULL
-                   , verbose = 1L
-                   , use_gp_model_for_validation = TRUE
-                   , fit_GP_cov_pars_OOS = FALSE
-                   , train_gp_model_cov_pars = TRUE
-                   , label = NULL
-                   , weight = NULL
-                   , obj = NULL
-                   , eval = NULL
-                   , record = TRUE
-                   , eval_freq = 1L
-                   , showsd = FALSE
-                   , stratified = TRUE
-                   , init_model = NULL
-                   , colnames = NULL
-                   , categorical_feature = NULL
-                   , callbacks = list()
-                   , reset_data = FALSE
-                   , delete_boosters_folds = FALSE
-                   , ...
+                    , data
+                    , gp_model = NULL
+                    , nrounds = 1000L
+                    , early_stopping_rounds = NULL
+                    , folds = NULL
+                    , nfold = 5L
+                    , metric = NULL
+                    , verbose = 1L
+                    , use_gp_model_for_validation = TRUE
+                    , fit_GP_cov_pars_OOS = FALSE
+                    , train_gp_model_cov_pars = TRUE
+                    , label = NULL
+                    , weight = NULL
+                    , obj = NULL
+                    , eval = NULL
+                    , record = TRUE
+                    , eval_freq = 1L
+                    , showsd = FALSE
+                    , stratified = TRUE
+                    , init_model = NULL
+                    , colnames = NULL
+                    , categorical_feature = NULL
+                    , callbacks = list()
+                    , reset_data = FALSE
+                    , delete_boosters_folds = FALSE
+                    , ...
 ) {
 
   if (nrounds <= 0L) {
