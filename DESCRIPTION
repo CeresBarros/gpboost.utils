@@ -1,7 +1,7 @@
 Package: gpboost.utils
 Type: Package
 Title: Support functions for `gpboost`
-Version: 0.1.0
+Version: 0.1.0.9001
 Authors@R: c(
     person(
       "Ceres", "Barros",
