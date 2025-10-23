@@ -45,7 +45,7 @@
 #' ## export them in a list()
 #' gp_model <- GPModel(group_data = group_data[,1], likelihood="gaussian", free_raw_data = FALSE)
 #' set.seed(123)
-#' \dontrun{
+#' \donttest{
 #' ## the following will fail, because gpb.cv2 does not train gp_model and
 #' ## untrained 'GPModel' objects cannot be saved
 #' cvbst.ls <- (function(){
